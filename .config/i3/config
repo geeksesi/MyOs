@@ -170,8 +170,13 @@ bar {
 }
 
 ######### GEEKSESI #########
-
+# Language Switch
 exec setxkbmap -option 'grp:alt_shift_toggle' -layout us,ir
+
+# volume manager
+exec xfce4-volumed
+
+
 
 # FlameShot
 bindsym Print exec "flameshot gui -p  /home/geeksesi/Pictures/SC"
