@@ -1,7 +1,6 @@
 *
 !README.md
 !.config/i3/*
-!.doo.d/config.el
-!.doo.d/init.el
-!.doo.d/package.el
+!.doom.d/
+!.doom.d/*
 !Monitor.sh
