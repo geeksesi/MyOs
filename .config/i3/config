@@ -183,3 +183,5 @@ exec xfce4-power-manager
 bindsym Print exec "flameshot gui -p  /home/geeksesi/Pictures/SC"
 
 bindsym $mod+Shift+t exec "/home/geeksesi/Downloads/firefox/Telegram/Telegram"
+
+bindsym $mod+m exec "parole /home/geeksesi/Music/En"
