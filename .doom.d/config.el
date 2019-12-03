@@ -11,7 +11,6 @@
 (setq rustic-lsp-client 'eglot)
 
 
-
 ;; Javascript
 (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
                                         ; Better imenu
@@ -29,8 +28,8 @@
                            (tern-mode)
                            (company-mode)))
                                         ; Disable completion keybindings, as we use xref-js2 instead
-;(define-key tern-mode-keymap (kbd "M-.") nil)
-;(define-key tern-mode-keymap (kbd "M-,") nil)
+                                        ;(define-key tern-mode-keymap (kbd "M-.") nil)
+                                        ;(define-key tern-mode-keymap (kbd "M-,") nil)
 (add-hook 'js2-mode-hook 'ac-js2-mode)
 (setq js2-highlight-level 4)
 (defun delete-tern-process ()
@@ -56,38 +55,41 @@
   '(define-key css-mode-map (kbd "C-c b") 'web-beautify-css))
 
 ;; Auto Complete
-;(require 'yasnippet)
+                                        ;(require 'yasnippet)
 (yas-global-mode 1)
-;(require 'auto-complete-config)
-(add-to-list 'ac-dictionary-directories "~/.emacs.d/ac-dict")
-(ac-config-default)
-(ac-set-trigger-key "TAB")
-(ac-set-trigger-key "<tab>")
+                                        ;(require 'auto-complete-config)
+                                        ;(add-to-list 'ac-dictionary-directories "~/.emacs.d/ac-dict")
+;(ac-config-default)
+;(ac-set-trigger-key "C-o")
+;(ac-set-trigger-key "<Controli>")
 
 ;; Smart Tab
-(smart-tabs-insinuate 'c 'javascript 'php 'python 'rust 'cpp)
+;(smart-tabs-insinuate 'c 'javascript 'php 'python 'rust 'cpp)
 
-;; Php
-; Wordpress
-(defun drupal-mode ()
-  "Drupal php-mode."
-  (interactive)
-  (php-mode)
-  (message "Drupal mode activated.")
-  (set 'tab-width 4)
-  (set 'c-basic-offset 2)
-  (set 'indent-tabs-mode nil)
-  (c-set-offset 'case-label '+)
-  (c-set-offset 'arglist-intro '+) ; for FAPI arrays and DBTNG
-  (c-set-offset 'arglist-cont-nonempty 'c-lineup-math) ; for DBTNG fields and values
-  ; More Drupal-specific customizations here
-)
 
-(defun setup-php-drupal ()
-  ; Drupal
-  (add-to-list 'auto-mode-alist '("\\.\\(module\\|test\\|install\\|theme\\)$" . drupal-mode))
-  (add-to-list 'auto-mode-alist '("/drupal.*\\.\\(php\\|inc\\)$" . drupal-mode))
-  (add-to-list 'auto-mode-alist '("\\.info" . conf-windows-mode))
-)
+;; PHP
+(add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.[agj]sp\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.as[cp]x\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.mustache\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.djhtml\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
+;(setq web-mode-code-indent-offset 4)
+;(setq default-tab-width 4)
+(setq web-mode-ac-sources-alist
+      '(("php" . (ac-source-yasnippet ac-source-php-auto-yasnippets))
+        ("html" . (ac-source-emmet-html-aliases ac-source-emmet-html-snippets))
+        ("css" . (ac-source-css-property ac-source-emmet-css-snippets))))
 
-(setup-php-drupal)
+(add-hook 'web-mode-before-auto-complete-hooks
+          '(lambda ()
+             (let ((web-mode-cur-language
+                    (web-mode-language-at-pos)))
+               (if (string= web-mode-cur-language "php")
+                   (yas-activate-extra-mode 'php-mode)
+                 (yas-deactivate-extra-mode 'php-mode))
+               (if (string= web-mode-cur-language "css")
+                   (setq emmet-use-css-transform t)
+                 (setq emmet-use-css-transform nil)))))
