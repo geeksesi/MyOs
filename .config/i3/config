@@ -185,3 +185,5 @@ bindsym Print exec "flameshot gui -p  /home/geeksesi/Pictures/SC"
 bindsym $mod+Shift+t exec "/home/geeksesi/Downloads/firefox/Telegram/Telegram"
 
 bindsym $mod+m exec "parole /home/geeksesi/Music/En"
+
+bindsym $mod+mod1+d exec "do0 --no-service"
