@@ -64,7 +64,5 @@ let g:NERDTreeIndicatorMapCustom = {
     \ 'Ignored'   : '  ',
     \ "Unknown"   : " ? "
     \ }
-let g:NERDTreeMapNextHunk = ' '
-let g:NERDTreeMapPrevHunk = ' '
-let g:NERDTreeShowIgnoredStatus = 1
+let g:NERDTreeShowIgnoredStatus = 0 
 
