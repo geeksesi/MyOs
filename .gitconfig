@@ -1,0 +1,7 @@
+[user]
+	name = geeksesi
+	email = geeksesi@gmail.com
+[gui]
+	encoding = UTF-8
+[credential]
+	helper = cache

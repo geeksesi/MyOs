@@ -6,3 +6,6 @@
 !Monitor.sh
 !.config/fish/config.fish
 !geeksesi_install.sh
+!.config/fontconfig/fonts.conf
+!.vimrc
+!.gitconfig
