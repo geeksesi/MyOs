@@ -13,6 +13,11 @@ Plugin 'Xuyuanp/nerdtree-git-plugin'
 Plugin 'tpope/vim-fugitive'
 Plugin 'git://git.wincent.com/command-t.git'
 Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
+
+" Color Schema
+Plugin 'Mcmartelle/vim-monokai-bold'
+Plugin 'jdsimcoe/panic.vim'
+
 " End of Plugins
 call vundle#end()            " required
 filetype plugin indent on    " required
@@ -46,11 +51,14 @@ set softtabstop=4
 set undolevels=1000
 set backspace=indent,eol,start	
 
+set guifont=Ubuntu\ Mono\ Regular\ 12
+
 " NerdTree
 autocmd StdinReadPre * let s:std_in=1
 autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
 map <C-tab> :NERDTreeToggle<CR>
 let NERDTreeShowHidden=1
+let NERDTreeMapOpenInTab='<C-ENTER>'
 "" + Git
 let g:NERDTreeIndicatorMapCustom = {
     \ "Modified"  : " ✹ ",
@@ -66,3 +74,7 @@ let g:NERDTreeIndicatorMapCustom = {
     \ }
 let g:NERDTreeShowIgnoredStatus = 0 
 
+
+" Vim Gui 
+colorscheme monokai-bold
+set guioptions-=T
