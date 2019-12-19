@@ -7,8 +7,7 @@ sudo apt install -y \
 	xfce4-volumed xfce4-power-manager \
 	parole \
 	tor obfs4proxy \
-	vim && \
+	vim vim-gtk3 && \
 cd Download && mkdir T_D && mkdir firefox && cd T_D && \
-wget https://atom.io/download/deb -o atom.deb && \
-sudo dpkg -i atom.deb -y && \
 sudo apt install -f -y && \
+
