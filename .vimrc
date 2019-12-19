@@ -46,7 +46,8 @@ set shiftwidth=4
 set smartindent	
 set smarttab	
 set softtabstop=4	
-
+set textwidth=0 wrapmargin=0
+set wrap
 
 set undolevels=1000
 set backspace=indent,eol,start	
