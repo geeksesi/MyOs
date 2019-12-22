@@ -1,4 +1,5 @@
 *
+.fonts/.uuid
 !README.md
 !.config/i3/*
 !.doom.d/
