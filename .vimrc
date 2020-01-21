@@ -13,6 +13,11 @@ Plugin 'Xuyuanp/nerdtree-git-plugin'
 Plugin 'tpope/vim-fugitive'
 Plugin 'git://git.wincent.com/command-t.git'
 Plugin 'rstacruz/sparkup', {'rtp': 'vim/'}
+" Comment plugin
+Plugin 'tpope/vim-commentary'
+" php's plugin
+Plugin 'stephpy/vim-php-cs-fixer'
+Plugin 'StanAngeloff/php.vim'
 
 " Color Schema
 Plugin 'Mcmartelle/vim-monokai-bold'
@@ -52,7 +57,7 @@ set wrap
 set undolevels=1000
 set backspace=indent,eol,start	
 
-set guifont=Ubuntu\ Mono\ Regular\ 12
+set guifont=Ubuntu\ Mono\ Regular\ 13
 
 " NerdTree
 autocmd StdinReadPre * let s:std_in=1
@@ -79,3 +84,6 @@ let g:NERDTreeShowIgnoredStatus = 0
 " Vim Gui 
 colorscheme monokai-bold
 set guioptions-=T
+
+" No swap
+set noswapfile
