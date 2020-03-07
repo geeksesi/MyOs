@@ -189,3 +189,5 @@ bindsym $mod+m exec "parole /home/geeksesi/Music/En"
 bindsym $mod+mod1+d exec "do0 --no-service"
 
 bindsym $mod+p exec "sleep 1500; mpv /home/geeksesi/20min.mp4"
+
+exec --no-startup-id feh --randomize --bg-scale $HOME/Pictures/Wallpapers/*

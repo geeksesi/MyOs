@@ -1,7 +1,9 @@
 [user]
-	name = geeksesi
+	name = Mohammad Javad Ghasemy 
 	email = geeksesi@gmail.com
 [gui]
 	encoding = UTF-8
 [credential]
 	helper = cache
+[core]
+	editor = vim
