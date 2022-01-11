@@ -2,16 +2,16 @@ set nocompatible              " be iMproved, required
 filetype off                  " required
 
 " set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
+#set rtp+=~/.vim/bundle/Vundle.vim
+#call vundle#begin()
 " Plugins Here
 " Color Schema
-Plugin 'Mcmartelle/vim-monokai-bold'
-Plugin 'jdsimcoe/panic.vim'
+#Plugin 'Mcmartelle/vim-monokai-bold'
+#Plugin 'jdsimcoe/panic.vim'
 
 " End of Plugins
-call vundle#end()            " required
-filetype plugin indent on    " required
+#call vundle#end()            " required
+#filetype plugin indent on    " required
 
 set shell=/bin/fish
 
@@ -40,10 +40,10 @@ set wrap
 set undolevels=1000
 set backspace=indent,eol,start	
 
-set guifont=Ubuntu\ Mono\ Regular\ 13
+#set guifont=Ubuntu\ Mono\ Regular\ 13
 
 " Vim Gui 
-colorscheme monokai-bold
+#colorscheme monokai-bold
 set guioptions-=T
 
 " No swap
