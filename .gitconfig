@@ -1,9 +1,22 @@
 [user]
 	name = Mohammad Javad Ghasemy 
 	email = geeksesi@gmail.com
+	signingkey = /home/geeksesi/.ssh/id_rsa.pub
 [gui]
 	encoding = UTF-8
 [credential]
 	helper = cache
 [core]
 	editor = vim
+[pull]
+	rebase = false
+[commit]
+	gpgsign = true
+[gpg]
+	format = ssh
+
+[includeIf "gitdir:~/public_html/HumanPixel/"]
+  path = ~/public_html/HumanPixel/.gitconfig
+
+[includeIf "gitdir:~/public_html/Flow/"]
+  path = ~/public_html/Flow/.gitconfig
