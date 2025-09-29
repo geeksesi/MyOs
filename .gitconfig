@@ -15,8 +15,3 @@
 [gpg]
 	format = ssh
 
-[includeIf "gitdir:~/public_html/HumanPixel/"]
-  path = ~/public_html/HumanPixel/.gitconfig
-
-[includeIf "gitdir:~/public_html/Flow/"]
-  path = ~/public_html/Flow/.gitconfig
