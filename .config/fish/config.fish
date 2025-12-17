@@ -4,6 +4,7 @@ end
 
 
 fish_add_path /home/geeksesi/.local/bin
+fish_add_path /home/geeksesi/Downloads/bin
 
 alias sail './vendor/bin/sail'
 
