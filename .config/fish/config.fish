@@ -14,3 +14,16 @@ alias lbash "docker run --rm \
     -w /opt \
     laravelsail/php82-composer:latest \
     bash -c "
+
+alias w '../../../w.sh'
+
+
+# opencode
+fish_add_path /home/geeksesi/.opencode/bin
+
+# Set Fish as shell prefix for Claude Code (experimental)
+# set -gx CLAUDE_CODE_SHELL_PREFIX "fish -c"
+
+# Claude Status Bar Monitor
+alias cs='claude-statusbar'
+alias cstatus='claude-statusbar'

@@ -15,3 +15,7 @@
 [gpg]
 	format = ssh
 
+[includeIf "gitdir:/home/geeksesi/public_html/Tribes/"]
+	path = ~/.gitconfig-tribes
+[includeIf "gitdir:/home/geeksesi/public_html/Am/"]
+	path = ~/.gitconfig-am

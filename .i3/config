@@ -137,16 +137,50 @@ bindsym $mod+Ctrl+Left workspace prev
 #                 set $ws2 2:
 
 
-set $ws1 "1 -   Dear Fox."
-set $ws2 "2 -   Cli"
-set $ws3 "3 -   just Watch"
-set $ws4 "4 -   Waste time."
-set $ws5 "5 -   Dota time."
-set $ws6 "C -   Vim"
-set $ws7 "7 -   Music"
-set $ws8 "X -   Vim"
-set $ws9 "Z -   Vim"
-set $ws10 "10"
+
+set $ws1 "  Foxy Business"        
+set $ws2 "  Shell Shocked"
+set $ws3 "  Binge Station"
+set $ws4 "  Procrastination"
+set $ws5 "  Dota 2 or Feed"
+set $ws6 "  Code Wizard"
+set $ws7 "  Vibe Check"
+set $ws8 "  Hack The Planet"
+set $ws9 "  File Explorer"
+set $ws10 ""
+
+set $ws_kp1 "  Code Ninja"         
+set $ws_kp2 "  Bug Factory"
+set $ws_kp3 "  Sudo Mode"
+set $ws_kp4 "  Surfin'"
+set $ws_kp5 "  Chat Roulette"
+set $ws_kp6 "  Directory Tree"
+set $ws_kp7 "  Database Hell"
+set $ws_kp8 "  Sys Admin"
+set $ws_kp9 "  Config Chaos"
+
+# Assign workspaces to monitors
+# Regular workspaces (1-9) to DisplayPort-2 (right monitor)
+workspace $ws1 output DisplayPort-2
+workspace $ws2 output DisplayPort-2
+workspace $ws3 output DisplayPort-2
+workspace $ws4 output DisplayPort-2
+workspace $ws5 output DisplayPort-2
+workspace $ws6 output DisplayPort-2
+workspace $ws7 output DisplayPort-2
+workspace $ws8 output DisplayPort-2
+workspace $ws9 output DisplayPort-2
+
+# Numpad workspaces to HDMI-A-0 (left monitor)
+workspace $ws_kp1 output HDMI-A-0
+workspace $ws_kp2 output HDMI-A-0
+workspace $ws_kp3 output HDMI-A-0
+workspace $ws_kp4 output HDMI-A-0
+workspace $ws_kp5 output HDMI-A-0
+workspace $ws_kp6 output HDMI-A-0
+workspace $ws_kp7 output HDMI-A-0
+workspace $ws_kp8 output HDMI-A-0
+workspace $ws_kp9 output HDMI-A-0
 
 # switch to workspace
 bindsym $mod+1 workspace $ws1
@@ -159,6 +193,28 @@ bindsym $mod+7 workspace $ws7
 bindsym $mod+x workspace $ws8
 bindsym $mod+z workspace $ws9
 
+# switch to workspace (numpad with numlock on)
+bindsym $mod+Mod2+KP_1 workspace $ws_kp1
+bindsym $mod+Mod2+KP_2 workspace $ws_kp2
+bindsym $mod+Mod2+KP_3 workspace $ws_kp3
+bindsym $mod+Mod2+KP_4 workspace $ws_kp4
+bindsym $mod+Mod2+KP_5 workspace $ws_kp5
+bindsym $mod+Mod2+KP_6 workspace $ws_kp6
+bindsym $mod+Mod2+KP_7 workspace $ws_kp7
+bindsym $mod+Mod2+KP_8 workspace $ws_kp8
+bindsym $mod+Mod2+KP_9 workspace $ws_kp9
+
+# switch to workspace (numpad with numlock off)
+bindsym $mod+KP_End workspace $ws_kp1
+bindsym $mod+KP_Down workspace $ws_kp2
+bindsym $mod+KP_Next workspace $ws_kp3
+bindsym $mod+KP_Left workspace $ws_kp4
+bindsym $mod+KP_Begin workspace $ws_kp5
+bindsym $mod+KP_Right workspace $ws_kp6
+bindsym $mod+KP_Home workspace $ws_kp7
+bindsym $mod+KP_Up workspace $ws_kp8
+bindsym $mod+KP_Prior workspace $ws_kp9
+
 # move focused container to workspace
 bindsym $mod+Shift+1 move container to workspace $ws1
 bindsym $mod+Shift+2 move container to workspace $ws2
@@ -169,6 +225,17 @@ bindsym $mod+Shift+c move container to workspace $ws6
 bindsym $mod+Shift+7 move container to workspace $ws7
 bindsym $mod+Shift+x move container to workspace $ws8
 bindsym $mod+Shift+z move container to workspace $ws9
+
+# move focused container to workspace (numpad)
+bindcode $mod+Shift+87 move container to workspace $ws_kp1
+bindcode $mod+Shift+88 move container to workspace $ws_kp2
+bindcode $mod+Shift+89 move container to workspace $ws_kp3
+bindcode $mod+Shift+83 move container to workspace $ws_kp4
+bindcode $mod+Shift+84 move container to workspace $ws_kp5
+bindcode $mod+Shift+85 move container to workspace $ws_kp6
+bindcode $mod+Shift+79 move container to workspace $ws_kp7
+bindcode $mod+Shift+80 move container to workspace $ws_kp8
+bindcode $mod+Shift+81 move container to workspace $ws_kp9
 
 
 
@@ -250,6 +317,7 @@ bindsym $mod+Mod1+l exec --no-startup-id blurlock
 
 # Autostart applications
 exec --no-startup-id ~/.screenlayout/main.sh
+exec --no-startup-id numlockx on
 exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
 exec --no-startup-id sleep 2;nitrogen --restore; sleep 1; picom -b
 exec --no-startup-id nm-applet
@@ -402,6 +470,11 @@ exec --no-startup-id gxkb
 bindsym XF86AudioPlay exec playerctl play-pause
 bindsym $mod+XF86AudioPlay exec playerctl next
 
-exec  volumeicon
+# Volume control with notifications
+bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +5% && notify-send "Volume: $(pactl get-sink-volume @DEFAULT_SINK@ | grep -oP '\d+%' | head -1)"
+bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -5% && notify-send "Volume: $(pactl get-sink-volume @DEFAULT_SINK@ | grep -oP '\d+%' | head -1)"
+bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && notify-send "Volume: $(pactl get-sink-mute @DEFAULT_SINK@ | grep -q 'yes' && echo 'Muted' || echo 'Unmuted')"
+
+exec --no-startup-id sh -c "sleep 3 && volumeicon"
 
 

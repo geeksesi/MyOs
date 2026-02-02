@@ -27,9 +27,9 @@ services:
       PMA_PORT: 3306
       PMA_USER: root
       PMA_PASSWORD: rootpassword
-      UPLOAD_LIMIT: 512M
+      UPLOAD_LIMIT: 2G
       MAX_EXECUTION_TIME: 600
-      MEMORY_LIMIT: 512M
+      MEMORY_LIMIT: 1024M
     ports:
       - "1003:80"
     depends_on:
