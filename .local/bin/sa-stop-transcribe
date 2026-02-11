@@ -39,7 +39,21 @@ fi
 echo "AI_PROCESSING" > ~/.cache/sa-recording-status
 notify-send "🤖 AI Processing" "Sending to Claude..."
 
-CLAUDE_OUTPUT=$(echo "$TRANSCRIPT" | /home/geeksesi/.local/bin/claude -p --model 'haiku' 2>&1)
+# Create custom prompt for Claude to clean up STT output
+PROMPT="Analyze the following speech-to-text transcript and clean it up:
+1. Fix all spelling mistakes and typos
+2. Remove filler words (um, uh, like, you know, etc.)
+3. Correct any words that don't fit the subject or context
+4. Fix grammar and punctuation
+5. Remove repetitions
+6. Make the text clear and coherent
+
+Output ONLY the cleaned text, nothing else. Do not add explanations or comments.
+
+Transcript:
+$TRANSCRIPT"
+
+CLAUDE_OUTPUT=$(echo "$PROMPT" | /home/geeksesi/.local/bin/claude -p --model 'haiku' 2>&1)
 if [ $? -ne 0 ]; then
     echo "ERROR" > ~/.cache/sa-recording-status
     notify-send -u critical "❌ Claude Error" "$CLAUDE_OUTPUT"
