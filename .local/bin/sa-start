@@ -1,0 +1,16 @@
+#!/bin/bash
+# Voice recording start script
+# Starts recording with speak-to-ai and updates status
+
+OUTPUT=$(~/Downloads/bin/sa start 2>&1)
+EXIT_CODE=$?
+
+if [ $EXIT_CODE -eq 0 ]; then
+    echo "RECORDING" > ~/.cache/sa-recording-status
+    notify-send "🎤 Recording" "Recording started"
+else
+    echo "ERROR" > ~/.cache/sa-recording-status
+    notify-send -u critical "❌ Recording Error" "$OUTPUT"
+fi
+
+exit $EXIT_CODE

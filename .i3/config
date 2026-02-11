@@ -103,8 +103,8 @@ bindsym $mod+Shift+q split toggle
 # toggle fullscreen mode for the focused container
 bindsym $mod+f fullscreen toggle
 
-# change container layout (stacked, tabbed, toggle split)
-bindsym $mod+s layout stacking
+# change container layout (tabbed, toggle split)
+# Note: $mod+s removed - now used for voice recording
 bindsym $mod+w layout tabbed
 bindsym $mod+e layout toggle split
 
@@ -118,7 +118,7 @@ bindsym $mod+space focus mode_toggle
 bindsym $mod+Shift+s sticky toggle
 
 # focus the parent container
-bindsym $mod+a focus parent
+# Note: $mod+a removed - now used for voice recording transcribe
 
 # move the currently focused window to the scratchpad
 bindsym $mod+Shift+minus move scratchpad
@@ -364,7 +364,7 @@ set_from_resource $term_color15    color15
 # Start i3bar to display a workspace bar (plus the system information i3status if available)
 bar {
 	i3bar_command i3bar
-	status_command i3status
+	status_command ~/.local/bin/sa-status-wrapper
 	position bottom
 
 ## please set your primary output first. Example: 'xrandr --output eDP1 --primary'
@@ -465,6 +465,10 @@ mode "$mode_gaps_outer" {
 # FlameShot
 bindsym Print exec "flameshot gui --clipboard  -p  /home/geeksesi/Pictures/SC"
 
+# Voice recording controls
+bindsym $mod+s exec --no-startup-id ~/.local/bin/sa-start
+bindsym $mod+a exec --no-startup-id ~/.local/bin/sa-stop-transcribe
+
 exec --no-startup-id gxkb
 
 bindsym XF86AudioPlay exec playerctl play-pause
@@ -476,5 +480,8 @@ bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT
 bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && notify-send "Volume: $(pactl get-sink-mute @DEFAULT_SINK@ | grep -q 'yes' && echo 'Muted' || echo 'Unmuted')"
 
 exec --no-startup-id sh -c "sleep 3 && volumeicon"
+
+# Run sa at startup
+exec --no-startup-id ~/Downloads/bin/sa
 
 

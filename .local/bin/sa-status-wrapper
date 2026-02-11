@@ -1,0 +1,42 @@
+#!/bin/bash
+# i3status wrapper that injects recording status into the status bar
+
+i3status | while IFS= read -r line; do
+    # Check if this is a JSON array line (status blocks)
+    if [[ "$line" =~ ^\[(.*)\]$ ]]; then
+        STATUS=$(cat ~/.cache/sa-recording-status 2>/dev/null || echo "IDLE")
+
+        # Build status block based on current state
+        case "$STATUS" in
+            RECORDING)
+                BLOCK='{"full_text":"🎤 Recording","color":"#E5201D","name":"sa_status"},'
+                ;;
+            PROCESSING)
+                BLOCK='{"full_text":"⏸️  Processing","color":"#F59335","name":"sa_status"},'
+                ;;
+            TRANSCRIBING)
+                BLOCK='{"full_text":"📝 Transcribing","color":"#F59335","name":"sa_status"},'
+                ;;
+            AI_PROCESSING)
+                BLOCK='{"full_text":"🤖 AI","color":"#268BD2","name":"sa_status"},'
+                ;;
+            ERROR)
+                BLOCK='{"full_text":"❌ Error","color":"#CB4B16","name":"sa_status"},'
+                ;;
+            *)
+                # IDLE - don't show anything
+                BLOCK=''
+                ;;
+        esac
+
+        # Insert block at leftmost position (first item in array)
+        if [ -n "$BLOCK" ]; then
+            echo "[$BLOCK${BASH_REMATCH[1]}]"
+        else
+            echo "$line"
+        fi
+    else
+        # Pass through other lines unchanged (header, commas, etc.)
+        echo "$line"
+    fi
+done

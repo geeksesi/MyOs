@@ -1,0 +1,79 @@
+#!/bin/bash
+# Verification script for voice recording setup
+
+echo "=== Voice Recording Setup Verification ==="
+echo ""
+
+echo "1. Checking directories..."
+[ -d ~/Downloads/bin/log ] && echo "   ✓ Log directory exists" || echo "   ✗ Log directory missing"
+[ -d ~/.local/bin ] && echo "   ✓ Scripts directory exists" || echo "   ✗ Scripts directory missing"
+[ -d ~/.cache ] && echo "   ✓ Cache directory exists" || echo "   ✗ Cache directory missing"
+echo ""
+
+echo "2. Checking scripts..."
+[ -x ~/.local/bin/sa-start ] && echo "   ✓ sa-start is executable" || echo "   ✗ sa-start missing or not executable"
+[ -x ~/.local/bin/sa-stop-transcribe ] && echo "   ✓ sa-stop-transcribe is executable" || echo "   ✗ sa-stop-transcribe missing or not executable"
+[ -x ~/.local/bin/sa-status-wrapper ] && echo "   ✓ sa-status-wrapper is executable" || echo "   ✗ sa-status-wrapper missing or not executable"
+echo ""
+
+echo "3. Checking status file..."
+if [ -f ~/.cache/sa-recording-status ]; then
+    STATUS=$(cat ~/.cache/sa-recording-status)
+    echo "   ✓ Status file exists (current: $STATUS)"
+else
+    echo "   ✗ Status file missing"
+fi
+echo ""
+
+echo "4. Checking sa daemon..."
+if [ -x ~/Downloads/bin/sa ]; then
+    echo "   ✓ sa binary exists at correct path"
+    if ~/Downloads/bin/sa status &>/dev/null; then
+        echo "   ✓ sa daemon is running"
+    else
+        echo "   ⚠ sa daemon not running (will start on i3 reload)"
+    fi
+else
+    echo "   ✗ sa binary not found"
+fi
+echo ""
+
+echo "5. Checking dependencies..."
+command -v xclip &>/dev/null && echo "   ✓ xclip installed" || echo "   ✗ xclip missing"
+command -v notify-send &>/dev/null && echo "   ✓ notify-send installed" || echo "   ✗ notify-send missing"
+[ -x ~/.local/bin/claude ] && echo "   ✓ claude CLI installed" || echo "   ✗ claude CLI missing"
+echo ""
+
+echo "6. Checking i3 configuration..."
+if grep -q "sa-status-wrapper" ~/.i3/config; then
+    echo "   ✓ Status bar configured"
+else
+    echo "   ✗ Status bar not configured"
+fi
+
+if grep -q "sa-start" ~/.i3/config; then
+    echo "   ✓ Mod+S keybinding configured"
+else
+    echo "   ✗ Mod+S keybinding missing"
+fi
+
+if grep -q "sa-stop-transcribe" ~/.i3/config; then
+    echo "   ✓ Mod+A keybinding configured"
+else
+    echo "   ✗ Mod+A keybinding missing"
+fi
+
+if grep -q "~/Downloads/bin/sa" ~/.i3/config; then
+    echo "   ✓ sa autostart configured (correct path)"
+else
+    echo "   ✗ sa autostart path incorrect"
+fi
+echo ""
+
+echo "=== Next Steps ==="
+echo "1. Reload i3 configuration: Mod+Shift+R or run 'i3-msg reload'"
+echo "2. Test recording: Press Mod+S to start recording"
+echo "3. Test transcription: Press Mod+A to stop, transcribe, and process with AI"
+echo "4. Check status bar for recording indicator"
+echo "5. Check clipboard after processing: xclip -o -selection clipboard"
+echo "6. Check logs: ls -lh ~/Downloads/bin/log/"
