@@ -1,42 +1,85 @@
 #!/bin/bash
-# i3status wrapper that injects recording status into the status bar
+# Custom i3bar status generator with recording status, network, and datetime
 
-i3status | while IFS= read -r line; do
-    # Check if this is a JSON array line (status blocks)
-    if [[ "$line" =~ ^\[(.*)\]$ ]]; then
-        STATUS=$(cat ~/.cache/sa-recording-status 2>/dev/null || echo "IDLE")
+# Print the header for i3bar JSON protocol
+echo '{"version":1}'
+echo '['
+echo '[]'
 
-        # Build status block based on current state
-        case "$STATUS" in
-            RECORDING)
-                BLOCK='{"full_text":"🎤 Recording","color":"#E5201D","name":"sa_status"},'
-                ;;
-            PROCESSING)
-                BLOCK='{"full_text":"⏸️  Processing","color":"#F59335","name":"sa_status"},'
-                ;;
-            TRANSCRIBING)
-                BLOCK='{"full_text":"📝 Transcribing","color":"#F59335","name":"sa_status"},'
-                ;;
-            AI_PROCESSING)
-                BLOCK='{"full_text":"🤖 AI","color":"#268BD2","name":"sa_status"},'
-                ;;
-            ERROR)
-                BLOCK='{"full_text":"❌ Error","color":"#CB4B16","name":"sa_status"},'
-                ;;
-            *)
-                # IDLE - don't show anything
-                BLOCK=''
-                ;;
-        esac
+while true; do
+    # Read recording status
+    STATUS=$(cat ~/.cache/sa-recording-status 2>/dev/null || echo "IDLE")
 
-        # Insert block at leftmost position (first item in array)
-        if [ -n "$BLOCK" ]; then
-            echo "[$BLOCK${BASH_REMATCH[1]}]"
+    # Build recording status block
+    case "$STATUS" in
+        RECORDING)
+            REC_BLOCK='{"full_text":"[REC]","color":"#E5201D","name":"sa_status"}'
+            ;;
+        PROCESSING)
+            REC_BLOCK='{"full_text":"[PROC]","color":"#F59335","name":"sa_status"}'
+            ;;
+        TRANSCRIBING)
+            REC_BLOCK='{"full_text":"[TXT]","color":"#F59335","name":"sa_status"}'
+            ;;
+        AI_PROCESSING)
+            REC_BLOCK='{"full_text":"[AI]","color":"#268BD2","name":"sa_status"}'
+            ;;
+        ERROR)
+            REC_BLOCK='{"full_text":"[ERR]","color":"#CB4B16","name":"sa_status"}'
+            ;;
+        *)
+            # IDLE - show idle status
+            REC_BLOCK='{"full_text":"[IDLE]","color":"#586E75","name":"sa_status"}'
+            ;;
+    esac
+
+    # Get network status
+    # Check for active network interface (excluding loopback)
+    ACTIVE_IF=$(ip route get 1.1.1.1 2>/dev/null | grep -oP 'dev \K\S+')
+
+    if [ -n "$ACTIVE_IF" ]; then
+        # Check if it's WiFi or Ethernet
+        if [ -d "/sys/class/net/$ACTIVE_IF/wireless" ]; then
+            # WiFi - get SSID
+            SSID=$(iwgetid -r 2>/dev/null)
+            if [ -n "$SSID" ]; then
+                NET_BLOCK="{\"full_text\":\"WiFi: $SSID\",\"color\":\"#859900\",\"name\":\"network\"}"
+            else
+                NET_BLOCK='{"full_text":"WiFi","color":"#859900","name":"network"}'
+            fi
         else
-            echo "$line"
+            # Wired connection
+            NET_BLOCK='{"full_text":"NET: Ethernet","color":"#859900","name":"network"}'
         fi
     else
-        # Pass through other lines unchanged (header, commas, etc.)
-        echo "$line"
+        # No connection
+        NET_BLOCK='{"full_text":"NET: Disconnected","color":"#DC322F","name":"network"}'
     fi
+
+    # Get current date and time
+    DATETIME=$(date '+%Y-%m-%d %H:%M:%S')
+    DATETIME_BLOCK="{\"full_text\":\"$DATETIME\",\"color\":\"#93A1A1\",\"name\":\"datetime\"}"
+
+    # Build the status array
+    BLOCKS=()
+
+    # Always add recording status (including IDLE)
+    BLOCKS+=("$REC_BLOCK")
+
+    # Always add network and datetime
+    BLOCKS+=("$NET_BLOCK")
+    BLOCKS+=("$DATETIME_BLOCK")
+
+    # Join blocks with commas
+    OUTPUT="["
+    for i in "${!BLOCKS[@]}"; do
+        OUTPUT+="${BLOCKS[$i]}"
+        [ $i -lt $((${#BLOCKS[@]} - 1)) ] && OUTPUT+=","
+    done
+    OUTPUT+="]"
+
+    echo ",$OUTPUT"
+
+    # Update every second
+    sleep 1
 done
