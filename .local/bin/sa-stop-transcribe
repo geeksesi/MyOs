@@ -40,15 +40,18 @@ echo "AI_PROCESSING" > ~/.cache/sa-recording-status
 notify-send "🤖 AI Processing" "Sending to Claude..."
 
 # Create custom prompt for Claude to clean up STT output
-PROMPT="Analyze the following speech-to-text transcript and clean it up:
-1. Fix all spelling mistakes and typos
-2. Remove filler words (um, uh, like, you know, etc.)
-3. Correct any words that don't fit the subject or context
-4. Fix grammar and punctuation
-5. Remove repetitions
-6. Make the text clear and coherent
+PROMPT="You are receiving a speech-to-text transcript that may contain errors. Your task is to fix it while preserving ALL the original content and meaning.
 
-Output ONLY the cleaned text, nothing else. Do not add explanations or comments.
+Instructions:
+1. Fix spelling mistakes and misheard words
+2. Correct grammar and punctuation
+3. Fix words that don't fit the context (likely STT errors)
+4. Keep ALL filler words, repetitions, and hesitations - they are part of the original speech
+5. Do NOT summarize, shorten, or remove any parts
+6. Do NOT rephrase - keep the original speaking style
+7. Preserve the complete length and all details from the original
+
+Output ONLY the corrected text, nothing else. Do not add explanations or comments.
 
 Transcript:
 $TRANSCRIPT"
