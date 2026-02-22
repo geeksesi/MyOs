@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:github.com)",
+      "WebFetch(domain:help.mikrotik.com)",
+      "WebFetch(domain:forum.mikrotik.com)",
+      "mcp__mikrotik"
+    ]
+  }
+}

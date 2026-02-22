@@ -8,10 +8,11 @@ tell me to run ssh commands
 - **bridge (ether2-4)** = LAN (192.168.88.0/24)
 - Iran IPs: `IRAN` address-list (~1388 CIDRs) from [Ramtiiin/iran-ip](https://github.com/Ramtiiin/iran-ip)
 - **Traffic flow:**
-  - Iran destinations → ether5 directly (mangle `to-iran` routing mark)
+  - Iran destinations → ether5 directly (two-step mangle: `mark-connection iran-conn` + `mark-routing to-iran` with `in-interface-list=LAN`)
   - All other traffic → wg0 tunnel (default route, distance 1) → ether1 → VPN server
   - WG endpoint (206.189.122.139) → ether1 directly (host route, loop prevention)
   - ether1 DHCP default route at distance 2 (fallback if WG is down/disabled)
+- **FastTrack:** `connection-mark=no-mark` — excludes Iran-marked connections (FastTrack bypasses mangle, breaking policy routing)
 - DNS forced to router (port 53 redirect) on LAN; router DNS (1.1.1.1/8.8.8.8) goes through WG tunnel
 - `device-mode fetch=no` — auto-update requires enabling fetch + physical reboot
 - See [TRAFFIC_FORWARDING.md](./TRAFFIC_FORWARDING.md) for full details
