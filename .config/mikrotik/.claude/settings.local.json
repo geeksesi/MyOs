@@ -4,7 +4,8 @@
       "WebFetch(domain:github.com)",
       "WebFetch(domain:help.mikrotik.com)",
       "WebFetch(domain:forum.mikrotik.com)",
-      "mcp__mikrotik"
+      "mcp__mikrotik",
+      "Bash(gh api:*)"
     ]
   }
 }
