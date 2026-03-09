@@ -78,11 +78,6 @@ bindsym $mod+Down focus down
 bindsym $mod+Up focus up
 bindsym $mod+Right focus right
 
-# move focused window
-bindsym $mod+Shift+j move left
-bindsym $mod+Shift+k move down
-bindsym $mod+Shift+l move up
-bindsym $mod+Shift+semicolon move right
 
 # alternatively, you can use the cursor keys:
 bindsym $mod+Shift+Left move left
@@ -471,7 +466,7 @@ bindsym $mod+a exec --no-startup-id ~/.local/bin/sa-stop-transcribe
 
 exec --no-startup-id gxkb
 
-bindsym XF86AudioPlay exec playerctl play-pause
+bindsym XF86AudioPlay exec "playerctl -p termusic,firefox play-pause"
 bindsym $mod+XF86AudioPlay exec playerctl next
 
 # Volume control with notifications
