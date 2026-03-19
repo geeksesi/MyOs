@@ -33,6 +33,51 @@ while true; do
             ;;
     esac
 
+    # Get music status via playerctl
+    MUSIC_STATUS=$(playerctl status 2>/dev/null)
+    if [ -z "$MUSIC_STATUS" ]; then
+        MUSIC_BLOCK='{"full_text":"No Music","color":"#586E75","name":"music"}'
+    else
+        MUSIC_ARTIST=$(playerctl metadata xesam:artist 2>/dev/null)
+        MUSIC_TITLE=$(playerctl metadata xesam:title 2>/dev/null)
+        MUSIC_APP=$(playerctl metadata --format "{{playerName}}" 2>/dev/null)
+
+        # Truncate title if combined display is too long (max 40 chars)
+        MAX_LEN=40
+        DISPLAY="${MUSIC_ARTIST} | ${MUSIC_TITLE} | ${MUSIC_APP}"
+        if [ "${#DISPLAY}" -gt "$MAX_LEN" ]; then
+            # Reserve chars for artist, separator, app, ellipsis
+            OVERHEAD=$(( ${#MUSIC_ARTIST} + ${#MUSIC_APP} + 8 ))
+            TITLE_MAX=$(( MAX_LEN - OVERHEAD ))
+            if [ "$TITLE_MAX" -lt 4 ]; then
+                TITLE_MAX=4
+            fi
+            if [ "${#MUSIC_TITLE}" -gt "$TITLE_MAX" ]; then
+                MUSIC_TITLE="${MUSIC_TITLE:0:$TITLE_MAX}..."
+            fi
+            DISPLAY="${MUSIC_ARTIST} | ${MUSIC_TITLE} | ${MUSIC_APP}"
+        fi
+
+        # Escape for JSON (replace " with \")
+        DISPLAY_ESCAPED="${DISPLAY//\"/\\\"}"
+
+        if [ "$MUSIC_STATUS" = "Playing" ]; then
+            MUSIC_BLOCK="{\"full_text\":\"${DISPLAY_ESCAPED}\",\"color\":\"#859900\",\"markup\":\"pango\",\"name\":\"music\"}"
+        else
+            # Paused: show with strikethrough
+            MUSIC_BLOCK="{\"full_text\":\"<s>${DISPLAY_ESCAPED}</s>\",\"color\":\"#586E75\",\"markup\":\"pango\",\"name\":\"music\"}"
+        fi
+    fi
+
+    # Get active player block
+    ACTIVE_PLAYER=$(cat ~/.cache/sa-active-player 2>/dev/null)
+    if [ -n "$ACTIVE_PLAYER" ]; then
+        ACTIVE_PLAYER_ESCAPED="${ACTIVE_PLAYER//\"/\\\"}"
+        ACTIVE_PLAYER_BLOCK="{\"full_text\":\"[${ACTIVE_PLAYER_ESCAPED}]\",\"color\":\"#268BD2\",\"name\":\"active_player\"}"
+    else
+        ACTIVE_PLAYER_BLOCK="{\"full_text\":\"[auto]\",\"color\":\"#586E75\",\"name\":\"active_player\"}"
+    fi
+
     # Get network status
     # Check for active network interface (excluding loopback)
     ACTIVE_IF=$(ip route get 1.1.1.1 2>/dev/null | grep -oP 'dev \K\S+')
@@ -65,6 +110,10 @@ while true; do
 
     # Always add recording status (including IDLE)
     BLOCKS+=("$REC_BLOCK")
+
+    # Music and active player
+    BLOCKS+=("$MUSIC_BLOCK")
+    BLOCKS+=("$ACTIVE_PLAYER_BLOCK")
 
     # Always add network and datetime
     BLOCKS+=("$NET_BLOCK")
