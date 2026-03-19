@@ -466,8 +466,9 @@ bindsym $mod+a exec --no-startup-id ~/.local/bin/sa-stop-transcribe
 
 exec --no-startup-id gxkb
 
-bindsym XF86AudioPlay exec "playerctl -p termusic,firefox play-pause"
-bindsym $mod+XF86AudioPlay exec playerctl next
+bindsym XF86AudioPlay exec ~/.local/bin/sa-playerctl play-pause
+bindsym $mod+XF86AudioPlay exec ~/.local/bin/sa-playerctl next
+bindsym $mod+shift+XF86AudioPlay exec ~/.local/bin/sa-player-cycle
 
 # Volume control with notifications
 bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ +5% && notify-send "Volume: $(pactl get-sink-volume @DEFAULT_SINK@ | grep -oP '\d+%' | head -1)"
