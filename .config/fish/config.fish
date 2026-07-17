@@ -27,3 +27,7 @@ fish_add_path /home/geeksesi/.opencode/bin
 # Claude Status Bar Monitor
 alias cs='claude-statusbar'
 alias cstatus='claude-statusbar'
+
+# bun
+set --export BUN_INSTALL "$HOME/.bun"
+set --export PATH $BUN_INSTALL/bin $PATH
