@@ -1,6 +1,6 @@
 #!/bin/bash
 # Voice recording stop, transcribe, and AI processing script
-# Stops recording, gets transcript, processes with Claude, and logs results
+# Stops recording, gets transcript, processes with opencode, and logs results
 
 TIMESTAMP=$(date +%Y-%m-%d-%H-%M-%S)
 LOGFILE=~/Downloads/bin/log/${TIMESTAMP}.log
@@ -35,11 +35,11 @@ if [ -z "$TRANSCRIPT" ]; then
     exit 1
 fi
 
-# Process with Claude
+# Process with opencode
 echo "AI_PROCESSING" > ~/.cache/sa-recording-status
-notify-send "🤖 AI Processing" "Sending to Claude..."
+notify-send "🤖 AI Processing" "Sending to opencode..."
 
-# Create custom prompt for Claude to clean up STT output
+# Create custom prompt for opencode to clean up STT output
 PROMPT="You are receiving a speech-to-text transcript that may contain errors. Your task is to fix it while preserving ALL the original content and meaning.
 
 Instructions:
@@ -56,15 +56,22 @@ Output ONLY the corrected text, nothing else. Do not add explanations or comment
 Transcript:
 $TRANSCRIPT"
 
-CLAUDE_OUTPUT=$(echo "$PROMPT" | /home/geeksesi/.local/bin/claude -p --model 'haiku' 2>&1)
+set -o pipefail
+OPENCODE_OUTPUT=$(printf '%s' "$PROMPT" | /home/geeksesi/.opencode/bin/opencode run --model opencode-go/deepseek-v4-flash --format json 2>&1 | node -e 'const readline = require("readline"); const rl = readline.createInterface({ input: process.stdin }); rl.on("line", line => { try { const event = JSON.parse(line); if (event.type === "text" && event.part && typeof event.part.text === "string") process.stdout.write(event.part.text); } catch (_) { process.stderr.write(line + "\n"); } });' 2>&1)
 if [ $? -ne 0 ]; then
     echo "ERROR" > ~/.cache/sa-recording-status
-    notify-send -u critical "❌ Claude Error" "$CLAUDE_OUTPUT"
+    notify-send -u critical "❌ opencode Error" "$OPENCODE_OUTPUT"
+    exit 1
+fi
+
+if [ -z "$OPENCODE_OUTPUT" ]; then
+    echo "ERROR" > ~/.cache/sa-recording-status
+    notify-send -u critical "❌ opencode Error" "No corrected text returned"
     exit 1
 fi
 
 # Copy to clipboard
-echo "$CLAUDE_OUTPUT" | xclip -selection clipboard
+echo "$OPENCODE_OUTPUT" | xclip -selection clipboard
 notify-send "📋 Success" "Copied to clipboard"
 
 # Log everything
@@ -75,8 +82,8 @@ notify-send "📋 Success" "Copied to clipboard"
     echo ""
     echo "---"
     echo ""
-    echo "=== CLAUDE RESPONSE ==="
-    echo "$CLAUDE_OUTPUT"
+    echo "=== OPENCODE RESPONSE ==="
+    echo "$OPENCODE_OUTPUT"
 } > "$LOGFILE"
 
 # Reset status to idle

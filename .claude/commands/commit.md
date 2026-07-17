@@ -1,7 +1,7 @@
 Analyze the current git changes and create well-organized commits. Follow these rules strictly:
 
 1. Run `git status` and `git diff` to understand all changes (staged and unstaged).
-2. Only stage files that are already tracked by git (modified/deleted). Never add untracked or gitignored files unless explicitly requested.
+2. Stage all commitable files: modified, deleted, and new untracked files. Never add gitignored files.
 3. Group related changes together into logical commits. Multiple commits are allowed and encouraged when changes are unrelated.
 4. For each group:
    - Stage only the relevant files using `git add <file1> <file2> ...`

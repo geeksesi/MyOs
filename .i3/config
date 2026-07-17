@@ -156,15 +156,15 @@ set $ws_kp9 "  Config Chaos"
 
 # Assign workspaces to monitors
 # Regular workspaces (1-9) to DisplayPort-2 (right monitor)
-workspace $ws1 output DisplayPort-2
-workspace $ws2 output DisplayPort-2
-workspace $ws3 output DisplayPort-2
-workspace $ws4 output DisplayPort-2
-workspace $ws5 output DisplayPort-2
-workspace $ws6 output DisplayPort-2
-workspace $ws7 output DisplayPort-2
-workspace $ws8 output DisplayPort-2
-workspace $ws9 output DisplayPort-2
+workspace $ws1 output DisplayPort-1
+workspace $ws2 output DisplayPort-1
+workspace $ws3 output DisplayPort-1
+workspace $ws4 output DisplayPort-1
+workspace $ws5 output DisplayPort-1
+workspace $ws6 output DisplayPort-1
+workspace $ws7 output DisplayPort-1
+workspace $ws8 output DisplayPort-1
+workspace $ws9 output DisplayPort-1
 
 # Numpad workspaces to HDMI-A-0 (left monitor)
 workspace $ws_kp1 output HDMI-A-0
@@ -311,7 +311,7 @@ mode "resize" {
 bindsym $mod+Mod1+l exec --no-startup-id blurlock
 
 # Autostart applications
-exec --no-startup-id ~/.screenlayout/main.sh
+exec --no-startup-id ~/.screenlayout/main2.sh
 exec --no-startup-id numlockx on
 exec --no-startup-id /usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1
 exec --no-startup-id sleep 2;nitrogen --restore; sleep 1; picom -b
