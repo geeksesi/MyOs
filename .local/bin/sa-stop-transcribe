@@ -57,7 +57,7 @@ Transcript:
 $TRANSCRIPT"
 
 set -o pipefail
-OPENCODE_OUTPUT=$(printf '%s' "$PROMPT" | /home/geeksesi/.opencode/bin/opencode run --pure --model opencode-go/deepseek-v4-flash --format json --auto 2>&1 | node -e 'const readline = require("readline"); const rl = readline.createInterface({ input: process.stdin }); rl.on("line", line => { try { const event = JSON.parse(line); if (event.type === "text" && event.part && typeof event.part.text === "string") process.stdout.write(event.part.text); } catch (_) { process.stderr.write(line + "\n"); } });' 2>&1)
+OPENCODE_OUTPUT=$(printf '%s' "$PROMPT" | /home/geeksesi/.opencode/bin/opencode run --pure --model 9router/small --format json --auto 2>&1 | node -e 'const readline = require("readline"); const rl = readline.createInterface({ input: process.stdin }); rl.on("line", line => { try { const event = JSON.parse(line); if (event.type === "text" && event.part && typeof event.part.text === "string") process.stdout.write(event.part.text); } catch (_) { process.stderr.write(line + "\n"); } });' 2>&1)
 if [ $? -ne 0 ]; then
     echo "ERROR" > ~/.cache/sa-recording-status
     notify-send -u critical "❌ opencode Error" "$OPENCODE_OUTPUT"

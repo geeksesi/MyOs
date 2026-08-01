@@ -31,3 +31,6 @@ alias cstatus='claude-statusbar'
 # bun
 set --export BUN_INSTALL "$HOME/.bun"
 set --export PATH $BUN_INSTALL/bin $PATH
+
+# fnm: automatically use Node versions from .nvmrc
+fnm env --use-on-cd --version-file-strategy=recursive --shell fish | source

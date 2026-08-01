@@ -1,5 +1,6 @@
 # This file contains fish universal variable definitions.
 # VERSION: 3.0
+SETUVAR --export OPENCODE_EXPERIMENTAL_BACKGROUND_SUBAGENTS:1
 SETUVAR __fish_initialized:4300
 SETUVAR fish_greeting:Welcome\x20to\x20fish\x2c\x20the\x20friendly\x20interactive\x20shell\x0aType\x20\x60help\x60\x20for\x20instructions\x20on\x20how\x20to\x20use\x20fish
-SETUVAR fish_user_paths:/home/geeksesi/\x2eopencode/bin\x1e/home/geeksesi/\x2elocal/bin\x1e/home/geeksesi/Downloads/bin
+SETUVAR fish_user_paths:/home/geeksesi/\x2efoundry/bin\x1e/home/geeksesi/\x2eopencode/bin\x1e/home/geeksesi/\x2elocal/bin\x1e/home/geeksesi/Downloads/bin
