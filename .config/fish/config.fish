@@ -34,3 +34,5 @@ set --export PATH $BUN_INSTALL/bin $PATH
 
 # fnm: automatically use Node versions from .nvmrc
 fnm env --use-on-cd --version-file-strategy=recursive --shell fish | source
+
+set -gx RPC_URL "https://eth-mainnet.g.alchemy.com/v2/alch_jIzOaan6ops9tau8IVrk0"
