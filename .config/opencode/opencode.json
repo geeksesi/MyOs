@@ -1,0 +1,87 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "mcp": {
+    "pencil": {
+      "command": [
+        "/tmp/.mount_Pen-liDM8N09/resources/app.asar.unpacked/out/mcp-server-linux-x64",
+        "--app",
+        "desktop",
+        "--agent",
+        "openCodeCLI"
+      ],
+      "enabled": true,
+      "type": "local"
+    }
+  },
+  "model": "9router/High",
+  "small_model": "9router/small",
+  "default_agent": "orchestrator",
+  "provider": {
+    "9router": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "9Router",
+      "options": {
+        "baseURL": "https://router.geeksesi.com/v1"
+      },
+      "models": {
+        "High": {
+          "name": "High",
+          "modalities": {
+            "input": [
+              "text",
+              "image"
+            ],
+            "output": [
+              "text"
+            ]
+          }
+        },
+        "worker": {
+          "name": "worker",
+          "modalities": {
+            "input": [
+              "text",
+              "image"
+            ],
+            "output": [
+              "text"
+            ]
+          }
+        },
+        "small": {
+          "name": "small",
+          "modalities": {
+            "input": [
+              "text",
+              "image"
+            ],
+            "output": [
+              "text"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "plugin": [],
+  "lsp": false,
+  "agent": {
+    "orchestrator": {
+      "model": "9router/High"
+    },
+    "High": {
+      "model": "9router/High"
+    },
+    "general": {
+      "disable": true
+    },
+    "explore": {
+      "model": "9router/small"
+    },
+    "explorer": {
+      "description": "Fast explorer subagent for codebase exploration",
+      "mode": "subagent",
+      "model": "9router/small"
+    }
+  }
+}
